@@ -4,12 +4,14 @@ from typing import List
 from langchain_core.documents import Document
 from langchain_core.documents import Document
 from langchain_core.prompts import ChatPromptTemplate
+from llm_guard.input_scanners import PromptInjection
 
 # from typing_extensions import TypedDict
 from model.context import QAState
 
 from service.memory_data import get_last_n_messages, save_message_to_db
 
+injection_scanner = PromptInjection(threshold=0.5)
 
 async def summarize_messages(old_messages):
 
@@ -274,3 +276,19 @@ async def save_memory(state: QAState) -> QAState:
     )
 
     return state
+
+async def security_check_node(state: QAState):
+    prompt = state.question
+    sanitized_prompt, is_safe, risk_score = injection_scanner.scan(prompt)
+    if( is_safe < 0.5):
+        state.is_safe = False
+    else :
+        state.is_safe = True
+    
+async def route_security_check(stae:QAState):
+    if(stae.is_safe ):
+        return "classify_query"
+    else :
+        return "refusal"
+        
+    

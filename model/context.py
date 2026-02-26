@@ -19,6 +19,7 @@ class QAState(BaseModel):
     chat_id: str
     authorized: Optional[bool] = None
     db: Optional[AsyncSession] = None
+    is_safe:Optional[bool] = True
     model_config = ConfigDict(
         arbitrary_types_allowed=True
     )

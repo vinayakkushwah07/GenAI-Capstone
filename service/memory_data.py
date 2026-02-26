@@ -55,3 +55,4 @@ async def get_last_n_messages(
         {"role": row.role, "content": row.content}
         for row in rows
     ]
+    
