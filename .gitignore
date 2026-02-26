@@ -1,0 +1,11 @@
+.env
+venv/*
+temp.txt
+/files/*
+chroma/*
+*/__init__.py
+*/*.pyc
+*/*/*.pyc
+*/__pycache__/*
+data_pipeline/file_process.py
+__pycache__
